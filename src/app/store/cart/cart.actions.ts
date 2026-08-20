@@ -1,0 +1,24 @@
+import { createAction, props } from "@ngrx/store";
+import { Product } from "../../core/models/product.model";
+
+export const addToCart = createAction(
+    '[Cart] Add To Cart',
+    props<{ 
+        product: Product;
+        quantity: number;
+    }>()
+)
+
+export const removeFromCart = createAction(
+    '[Cart] Remove From Cart',
+    props<{ productId: number; quantity: number}>()
+)
+
+export const updateQuantity = createAction(
+    '[Cart] Update Quantity',
+    props<{ productId: number; quantity: number}>()
+)
+
+export const clearCart = createAction(
+    '[Cart], Clear Cart'
+)

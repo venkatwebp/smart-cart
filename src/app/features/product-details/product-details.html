@@ -1,0 +1,200 @@
+<section class="product-details-page">
+
+  @if (product$ | async; as product) {
+
+    <div class="breadcrumb">
+      <a routerLink="/">Home</a>
+      <span>/</span>
+      <a routerLink="/products">Products</a>
+      <span>/</span>
+      <span>{{ product.title }}</span>
+    </div>
+
+
+    <div class="product-details">
+
+      <!-- Product Image -->
+      <div class="product-image-section">
+
+        <div class="product-image">
+          <img
+            [src]="product.image"
+            [alt]="product.title">
+        </div>
+
+      </div>
+
+
+      <!-- Product Information -->
+      <div class="product-info">
+
+        <span class="category">
+          {{ product.category }}
+        </span>
+
+        <h1>{{ product.title }}</h1>
+
+        <div class="rating">
+          ⭐ {{ product.rating }}
+
+          <span>
+            ({{ product.reviewCount }} reviews)
+          </span>
+        </div>
+
+
+        <div class="price-section">
+
+          <span class="price">
+            ₹{{ product.price }}
+          </span>
+
+          @if (product.discountPercentage > 0) {
+
+            <span class="discount">
+              {{ product.discountPercentage }}% OFF
+            </span>
+
+          }
+
+        </div>
+
+
+        <p class="description">
+          {{ product.description }}
+        </p>
+
+
+        <!-- Stock -->
+        <div
+          class="stock"
+          [class.out-of-stock]="!product.inStock">
+
+          @if (product.inStock) {
+
+            <span>✓ In Stock</span>
+
+            <small>
+              {{ product.stockQuantity }} units available
+            </small>
+
+          } @else {
+
+            <span>✕ Out of Stock</span>
+
+          }
+
+        </div>
+
+
+        <!-- Quantity -->
+        @if (product.inStock) {
+
+          <div class="quantity-section">
+
+            <label>Quantity</label>
+
+            <div class="quantity-control">
+
+              <button type="button" (click)="decreaseQuantity()">
+                −
+              </button>
+
+              <span>{{quantity}}</span>
+
+              <button type="button" (click)="increaseQuantity(product.stockQuantity)">
+                +
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- Actions -->
+        <div class="actions">
+
+          <button
+            type="button"
+            class="add-cart-btn"
+            [disabled]="!product.inStock"
+            (click)="addToCart(product, quantity)"
+            >
+            🛒 Add to Cart
+          </button>
+
+
+          <button
+            type="button"
+            class="wishlist-btn">
+
+            ♡
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Description -->
+
+    <div class="description-section">
+
+      <h2>Description</h2>
+
+      <p>
+        {{ product.description }}
+      </p>
+
+    </div>
+
+
+    <!-- Product Information -->
+
+    <div class="product-information">
+
+      <h2>Product Information</h2>
+
+      <div class="information-grid">
+
+        <div>
+          <span>Brand</span>
+          <strong>{{ product.brand }}</strong>
+        </div>
+
+        <div>
+          <span>Category</span>
+          <strong>{{ product.category }}</strong>
+        </div>
+
+        <div>
+          <span>Rating</span>
+          <strong>⭐ {{ product.rating }}</strong>
+        </div>
+
+        <div>
+          <span>Reviews</span>
+          <strong>{{ product.reviewCount }}</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
+  } @else {
+
+    <div class="loading">
+
+      <p>Loading product...</p>
+
+    </div>
+
+  }
+
+</section>
