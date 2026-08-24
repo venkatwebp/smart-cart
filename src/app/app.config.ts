@@ -6,6 +6,7 @@ import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { cartReducer } from './store/cart/cart.reducer';
+import { wishlistReducer } from './store/wishlist/wishlist.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +14,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideStore({
-      cart: cartReducer
+      cart: cartReducer,
+      wishlist: wishlistReducer
     }),
     provideEffects()
   ]

@@ -1,24 +1,121 @@
-<nav class="navbar">
-  <div class="brand">
-    <h2>SmartCart</h2>
-  </div>
+<header class="site-header">
 
-  <ul class="nav-links">
-    <li>
-      <a routerLink="/" routerLinkActive="active">
+  <div class="header-container">
+
+    <!-- Logo -->
+    <a routerLink="/" class="brand">
+
+      <div class="brand-mark">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="brand-name">
+        <strong>Smart</strong><span>Cart</span>
+      </div>
+
+    </a>
+
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
         Home
       </a>
-    </li>
 
-    <li>
-      <a routerLink="/products" routerLinkActive="active">
+      <a
+        routerLink="/products"
+        routerLinkActive="active">
         Products
       </a>
-    </li>
-    <li>
-      <a routerLink="/cart">
-        🛒 Cart ({{ cartItemCount$ | async }})
+
+      <a
+        routerLink="/wishlist"
+        routerLinkActive="active">
+        Wishlist
       </a>
-    </li>
-  </ul>
-</nav>
+
+    </nav>
+
+
+    <!-- Search -->
+    <div class="header-search">
+
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        placeholder="Search products..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchProducts()">
+
+      <button
+        type="button"
+        class="filter-button"
+        aria-label="Search filters">
+        ☷
+      </button>
+
+    </div>
+
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+
+      <!-- Wishlist -->
+      <a
+        routerLink="/wishlist"
+        class="header-action wishlist-action"
+        aria-label="Wishlist">
+        ♡
+        @if(wishlistCount$ | async; as count){
+          @if(count > 0){
+            <span class="wishlist-badge">
+              {{count}}
+            </span>
+          }
+        }
+      </a>
+
+
+      <!-- Cart -->
+      <a
+        routerLink="/cart"
+        class="header-action cart-action"
+        aria-label="Shopping cart">
+
+        🛒
+
+        @if (cartItemCount$ | async; as count) {
+
+          @if (count > 0) {
+            <span class="cart-badge">
+              {{ count }}
+            </span>
+          }
+
+        }
+
+      </a>
+
+
+      <!-- Profile -->
+      <button
+        type="button"
+        class="profile-button"
+        aria-label="Profile">
+
+        <span>SC</span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</header>

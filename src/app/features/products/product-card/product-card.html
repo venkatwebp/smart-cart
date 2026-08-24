@@ -38,8 +38,12 @@
         Add to Cart
       </button>
 
-      <button type="button" class="wishlist-btn">
-        ♡
+      <button type="button" class="wishlist-btn" (click)="toggleWishlist(product)">
+        @if (isWishlisted$ | async){
+          ♥
+        }@else{
+          ♡
+        }
       </button>
 
     </div>

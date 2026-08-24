@@ -1,1 +1,59 @@
-<p>wishlist works!</p>
+<section class="wishlist-page">
+
+  <div class="wishlist-header">
+    <div>
+      <span class="eyebrow">YOUR COLLECTION</span>
+      <h1>My Wishlist</h1>
+      <p>Save your favorite products and find them here anytime.</p>
+    </div>
+  </div>
+
+
+  @if (wishlistItems$ | async; as wishlistItems) {
+
+    @if (wishlistItems.length > 0) {
+
+      <div class="wishlist-grid">
+
+        @for (product of wishlistItems; track product.id) {
+
+          <app-product-card
+            [product]="product">
+          </app-product-card>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <div class="empty-wishlist">
+
+        <div class="empty-icon">
+          ♡
+        </div>
+
+        <h2>Your Wishlist is Empty</h2>
+
+        <p>
+          Save products you love and find them here later.
+        </p>
+
+        <a routerLink="/products"
+          class="explore-btn">
+          Explore Products
+        </a>
+
+      </div>
+
+    }
+
+  } @else {
+
+    <div class="loading">
+      <p>Loading wishlist...</p>
+    </div>
+
+  }
+
+</section>

@@ -1,11 +1,11 @@
 <section class="products-page">
-
+<div class="product-header">
   <h1>Products</h1>
+</div>
 
   @if (products$ | async; as products) {
 
     @if (products.length === 0) {
-
       <p>No products found.</p>
 
     } @else {
