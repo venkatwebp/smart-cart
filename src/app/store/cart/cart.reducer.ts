@@ -1,14 +1,16 @@
-import { createReducer, on, State } from "@ngrx/store"; 
+import { createReducer, on, State } from "@ngrx/store";
 import { CartItem } from "../../core/models/cart-item.model";
 
-import{
+import {
     addToCart,
     removeFromCart,
     updateQuantity,
-    clearCart
+    clearCart,
+    increaseQuantity,
+    decreaseQuantity
 } from './cart.actions'
 
-export interface CartState{
+export interface CartState {
     items: CartItem[];
 }
 
@@ -19,20 +21,20 @@ const initialState: CartState = {
 export const cartReducer = createReducer(
     initialState,
 
-    on(addToCart, (state, {product, quantity}) => {
+    on(addToCart, (state, { product, quantity }) => {
         const existingItem = state.items.find(
             item => item.product.id === product.id
         );
-        if(existingItem){
+        if (existingItem) {
 
             return {
-                ...state, 
-                items: state.items.map(item => 
+                ...state,
+                items: state.items.map(item =>
                     item.product.id === product.id ? {
                         ...item,
                         quantity: item.quantity + quantity
                     }
-                    : item
+                        : item
                 )
             }
         }
@@ -51,26 +53,48 @@ export const cartReducer = createReducer(
     on(removeFromCart, (state, { productId }) => ({
         ...state,
         items: state.items.filter(
-            item => item.product.id === productId
+            item => item.product.id !== productId
         )
     }
 
     )),
 
-on(updateQuantity, (state, { productId, quantity }) => ({
-    ...state,
+    on(updateQuantity, (state, { productId, quantity }) => ({
+        ...state,
 
-    items: state.items.map(item =>
-      item.product.id === productId
-        ? {
-            ...item,
-            quantity
-          }
-        : item
-    )
-  })),
+        items: state.items.map(item =>
+            item.product.id === productId
+                ? {
+                    ...item,
+                    quantity
+                }
+                : item
+        )
+    })),
 
 
-  on(clearCart, () => initialState)
+    on(clearCart, () => initialState),
+
+    on(increaseQuantity, (state, { productId }) => ({
+        ...state,
+        items: state.items.map(item =>
+            item.product.id === productId ? {
+                ...item,
+                quantity: item.quantity + 1
+            } : item
+        )
+    })),
+
+    on(decreaseQuantity, (state, { productId }) => ({
+        ...state,
+        items: state.items.map(item =>
+            item.product.id === productId ? {
+                ...item,
+                quantity: item.quantity > 1
+                    ? item.quantity - 1
+                    : item.quantity
+            } : item
+        )
+    }))
 
 );

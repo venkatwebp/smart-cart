@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, of, switchMap } from 'rxjs';
-import { selectCartItemCOunt } from '../../../store/cart/cart.selectors';
-import { selectWishlistCount } from '../../../store/wishlist/wishlist.selector';
+import { selectCartItemCount } from '../../../store/cart/cart.selectors';
+import { selectWishlistCount } from '../../../store/wishlist/wishlist.selectors';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -28,7 +28,7 @@ export class Header {
     private store: Store,
     private router: Router
   ){
-    this.cartItemCount$ = this.store.select(selectCartItemCOunt);
+    this.cartItemCount$ = this.store.select(selectCartItemCount);
     this.wishlistCount$ = this.store.select(selectWishlistCount);
   }
 

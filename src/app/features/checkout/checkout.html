@@ -1,1 +1,170 @@
-<p>checkout works!</p>
+<form class="checkout-main" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+    <!-- Customer Information -->
+
+    <div class="checkout-section" formGroupName="customer">
+        <h2>Customer Information</h2>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" type="text" formControlName="fullName" placeholder="Enter your full name" />
+                @if (checkoutForm.get('customer.fullName')?.invalid &&
+                    checkoutForm.get('customer.fullName')?.touched) {
+                <small class="text-danger">Full name is required.</small>
+                }
+            </div>
+
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input id="email" type="email" formControlName="email" placeholder="Enter your email" />
+                @if(checkoutForm.get('customer.email')?.hasError('required') &&
+                checkoutForm.get('customer.email')?.touched){
+                    <small class="text-danger">Email is  .</small>
+                }
+                @if(checkoutForm.get('customer.email')?.hasError('email') &&
+                    checkoutForm.get('customer.email')?.touched
+                ){
+                    <small class="text-danger"> Please enter a valid email address. </small>
+                }
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label for="phone">Phone</label>
+                <input id="phone" type="tel" formControlName="phone" placeholder="Enter your phone number" />
+                @if(checkoutForm.get('customer.phone')?.hasError('required') &&
+                checkoutForm.get('customer.phone')?.touched){
+                    <small class="text-danger">Phoner Number is required.</small>
+                }
+                @if(checkoutForm.get('customer.phone')?.hasError('pattern') && 
+                    checkoutForm.get('customer.phone')?.touched
+                ){
+                    <small class="text-danger">Please enter a valid 10-digit phone number.</small>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Shipping Address -->
+
+    <div class="checkout-section" formGroupName="shippingAddress">
+        <h2>Shipping Address</h2>
+
+        <div class="form-field">
+            <label for="address">Address</label>
+            <textarea id="address" formControlName="address" placeholder="Enter your complete address"></textarea>
+            @if(checkoutForm.get('shippingAddress.address')?.invalid &&
+                checkoutForm.get('shippingAddress.address')?.touched
+            ){
+                <small class="text-danger">Shipping Address is required.</small>
+            }
+        </div>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label for="city">City</label>
+                <input id="city" type="text" formControlName="city" placeholder="Enter city" />
+                @if(checkoutForm.get('shippingAddress.city')?.invalid &&
+                    checkoutForm.get('shippingAddress.city')?.touched
+                ){
+                    <small class="text-danger">City is required.</small>
+                }
+            </div>
+
+            <div class="form-field">
+                <label for="state">State</label>
+                <input id="state" type="text" formControlName="state" placeholder="Enter state" />
+                @if(checkoutForm.get('shippingAddress.state')?.invalid &&
+                    checkoutForm.get('shippingAddress.state')?.touched
+                ){
+                    <small class="text-danger">State is required.</small>
+                }
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-field">
+                <label for="postalCode">Postal Code</label>
+                <input id="postalCode" type="text" formControlName="postalCode" placeholder="Enter postal code" />
+                @if(checkoutForm.get('shippingAddress.postalCode')?.hasError('required') &&
+                    checkoutForm.get('shippingAddress.postalCode')?.touched 
+                ){
+                    <small class="text-danger">Postal Code is required.</small>
+                }
+                @if(checkoutForm.get('shippingAddress.postalCode')?.hasError('pattern') &&
+                    checkoutForm.get('shippingAddress.postalCode')?.touched
+                ){
+                    <small class="text-danger">Postal Code must be 6 digits.</small>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Payment Method -->
+
+    <div class="checkout-section checkout-payment">
+        <h2>Payment Method</h2>
+
+        <div class="form-field w50">
+            <label for="paymentMethod">Select Payment Method</label>
+
+            <select id="paymentMethod" formControlName="paymentMethod">
+                <option value="">Select payment method</option>
+                <option value="COD">Cash on Delivery</option>
+                <option value="CARD">Card</option>
+                <option value="UPI">UPI</option>
+            </select>
+            @if(checkoutForm.get('paymentMethod')?.invalid &&
+                checkoutForm.get('paymentMethod')?.touched
+            ){
+                <small class="text-danger">Please select a payment method.</small>
+            }
+        </div>
+
+    </div>
+
+    @if(orderSuccess$ | async){
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <div class="toast show text-bg-success border-0" role="alert">
+            <div class="toast-body">
+                <div class="d-flex align-items-start">
+                    <div class="me-3 fs-4">
+                        ✓
+                    </div>
+
+                    <div>
+                        <div class="fw-bold">
+                            {{ message$ | async }}
+                        </div>
+
+                        <small>
+                            Order ID: {{ orderId$ | async }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+    @if(error$ | async; as error){
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+    }
+
+    <div class="checkout-actions place-order">
+        <button type="submit" class="place-order-btn" 
+            [disabled]="checkoutForm.invalid || (loading$ | async)">
+            @if(loading$ | async){
+                Placing Order...
+            }@else{
+                Place Order
+            }
+        </button>
+    </div>
+
+</form>

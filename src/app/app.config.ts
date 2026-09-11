@@ -7,6 +7,12 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { cartReducer } from './store/cart/cart.reducer';
 import { wishlistReducer } from './store/wishlist/wishlist.reducer';
+import { ProductsEffects } from './store/products/products.effects';
+import { productReducer } from './store/products/products.reducer';
+import { productDetailsReducer } from './store/products/product-details.reducer';
+import { ProductDetailsEffects } from './store/products/product-details.effects';
+import { CheckoutEffects } from './store/checkout/checkout.effects';
+import { checkoutReducer } from './store/checkout/checkout.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,8 +21,15 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideStore({
       cart: cartReducer,
-      wishlist: wishlistReducer
+      wishlist: wishlistReducer,
+      product: productReducer,
+      productDetails: productDetailsReducer,
+      checkout: checkoutReducer
     }),
-    provideEffects()
+    provideEffects(
+      ProductsEffects,
+      ProductDetailsEffects,
+      CheckoutEffects
+    )
   ]
 };

@@ -1,101 +1,100 @@
 <section class="cart-page">
 
   <div class="cart-header">
-    <h1>Shopping Cart</h1>
+    <h1>Shopping Cart 
+      @if(cartItemCount$ | async; as count){
+        @if(count > 0){
+          ({{count}} Items)
+        }
+      }
+    </h1>
   </div>
 
   @if (cartItems$ | async; as items) {
 
-    @if (items.length === 0) {
+  @if (items.length === 0) {
 
-      <div class="empty-cart">
+  <div class="empty-cart">
 
-        <div class="empty-cart-icon">
-          🛒
+    <div class="empty-cart-icon">
+      🛒
+    </div>
+
+    <h2>Your Cart is Empty</h2>
+
+    <p>
+      Looks like you haven't added anything to your cart yet.
+    </p>
+
+    <a routerLink="/products" class="continue-shopping">
+      Continue Shopping
+    </a>
+
+  </div>
+
+  } @else {
+
+  <div class="cart-content">
+
+    <div class="cart-items">
+      @for (item of items; track item.product.id) {
+      <div class="cart-item position-relative">
+        <div class="cart-item-image">
+          <img [src]="item.product.image" [alt]="item.product.title">
         </div>
 
-        <h2>Your Cart is Empty</h2>
-
-        <p>
-          Looks like you haven't added anything to your cart yet.
-        </p>
-
-        <a routerLink="/products" class="continue-shopping">
-          Continue Shopping
-        </a>
-
-      </div>
-
-    } @else {
-
-      <div class="cart-content">
-
-        <div class="cart-items">
-
-          @for (item of items; track item.product.id) {
-
-            <div class="cart-item">
-
-              <!-- Product Image -->
-              <div class="cart-item-image">
-
-                <img
-                  [src]="item.product.image"
-                  [alt]="item.product.title">
-
-              </div>
-
-
-              <!-- Product Details -->
-              <div class="cart-item-details">
-
-                <span class="category">
-                  {{ item.product.category }}
-                </span>
-
-                <h3>
-                  {{ item.product.title }}
-                </h3>
-
-                <p class="price">
-                  ₹{{ item.product.price }}
-                </p>
-
-              </div>
-
-
-              <!-- Quantity -->
-              <div class="cart-item-quantity">
-
-                <span>Quantity</span>
-
-                <strong>
-                  {{ item.quantity }}
-                </strong>
-
-              </div>
-
-
-              <!-- Subtotal -->
-              <div class="cart-item-subtotal">
-
-                <span>Subtotal</span>
-
-                <strong>
-                  ₹{{ item.product.price * item.quantity }}
-                </strong>
-
-              </div>
-
-            </div>
-
-          }
-
+        <!-- Product Details -->
+        <div class="cart-item-details">
+          <span class="category">
+            {{ item.product.category }}
+          </span>
+          <h3>
+            {{ item.product.title }}
+          </h3>
+          <p class="price">
+            ₹{{ item.product.price }}
+          </p>
         </div>
 
-      </div>
 
-    }
+        <div class="cart-item-quantity">
+          <span class="d-block mb-1">Quantity</span>
+
+          <div class="input-group input-group-sm" style="width: 120px;">
+            <button type="button" class="btn btn-outline-secondary" (click)="decreaseQuantity(item)">
+              −
+            </button>
+            <span class="form-control text-center">
+              {{ item.quantity }}
+            </span>
+            <button type="button" class="btn btn-outline-secondary" (click)="increaseQuantity(item)">
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Subtotal -->
+        <div class="cart-item-subtotal">
+          <span>Subtotal</span>
+          <strong>
+            ₹{{ item.product.price * item.quantity }}
+          </strong>
+        </div>
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-2"
+          (click)="removeItem(item)">
+        </button>
+      </div>
+      }
+      
+    </div>
+    <div class="checkout">
+      <button class="checkout-btn" routerLink="/checkout">
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+  }
 
   }
 

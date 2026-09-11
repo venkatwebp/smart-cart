@@ -24,7 +24,7 @@ export const wishlistReducer = createReducer(
         return{
             ...state,
             items: state.items.filter(
-                item => item.id === productId
+                item => item.id !== productId
             )
         }
     }),
@@ -38,7 +38,7 @@ export const wishlistReducer = createReducer(
             return {
                 ...state,
                 items: state.items.filter(
-                    item => item.id === product.id
+                    item => item.id !== product.id
                 )
             }
         }

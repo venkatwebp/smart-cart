@@ -1,0 +1,60 @@
+.checkout-main{
+    width: 90%;
+    margin: 0 auto;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0;
+}
+.form-field label{
+    margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-field textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  min-height: 80px;
+  resize: vertical;
+}
+.w50{
+    width: 50%;
+}
+.place-order{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  & button{
+    display: inline-block;
+    padding: 12px 20px;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    background: #222;
+    color: white;
+    border: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

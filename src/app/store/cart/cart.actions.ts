@@ -11,7 +11,7 @@ export const addToCart = createAction(
 
 export const removeFromCart = createAction(
     '[Cart] Remove From Cart',
-    props<{ productId: number; quantity: number}>()
+    props<{ productId: number}>()
 )
 
 export const updateQuantity = createAction(
@@ -21,4 +21,14 @@ export const updateQuantity = createAction(
 
 export const clearCart = createAction(
     '[Cart], Clear Cart'
+)
+
+export const increaseQuantity = createAction(
+    '[Cart] Increase Quantity',
+    props<{ productId: number}>()
+)
+
+export const decreaseQuantity = createAction(
+    '[Cart] Decrease Quantity',
+    props<{ productId: number }>()
 )

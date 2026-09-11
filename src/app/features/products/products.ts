@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductCard } from './product-card/product-card';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../core/models/product.model';
-import { map, Observable, switchMap } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { loadProducts } from '../../store/products/products.actions';
+import { productList } from '../../store/products/products.selectors';
+import { loadingState } from '../../store/products/products.selectors';
+import { errorState } from '../../store/products/products.selectors';
 
 @Component({
   selector: 'app-products',
@@ -16,23 +20,29 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
-export class Products{
-  products$: Observable<Product[]>
+export class Products implements OnInit{
+  products$: Observable<Product[]>;
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
 
   constructor(
-    private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store
   ){
-    this.products$ = this.route.queryParams.pipe(
-      map(params => params['search'] || ''),
-      switchMap(searchTerm => 
-        this.productService.getProducts().pipe(
-          map(products => 
-            this.searchProducts(products, searchTerm)
-          )
-        )
+    this.products$ = combineLatest([
+      this.store.select(productList),
+      this.route.queryParams
+    ]).pipe(
+      map(([products, params]) => 
+        this.searchProducts(products, params['search'] ?? '')
       )
     );
+    this.loading$ = this.store.select(loadingState);
+    this.error$ = this.store.select(errorState);
+  }
+
+  ngOnInit(){
+    this.store.dispatch(loadProducts());
   }
 
   searchProducts(products: Product[], searchTerm: string): Product[]{
